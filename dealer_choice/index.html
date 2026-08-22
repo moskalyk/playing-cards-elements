@@ -1,0 +1,64 @@
+<html>
+<style>
+
+.card {
+scale: 1.5;
+    height: auto;
+    width: 200px;
+    margin-top: 5px;
+    margin-left: 2px;
+    border-radius: 5px;
+}
+
+.card-back {
+    transform: scale(0.95, 1);
+    width: 250px;
+    margin-top: 0px;
+    margin-left: -1px;
+
+}
+
+
+#stack1 {
+    position: fixed;
+    margin-left: 200px;
+    bottom: 30px
+}
+
+.container {
+    border-radius: 5px;
+    width: 4.5em;
+    height: 110px;
+    overflow: hidden;
+    display: flex;
+    float: left;
+    margin-left: -2em;
+    box-shadow: 1px 1px 10px rgba(0,0,0,.65);
+}
+
+.container:hover {
+    margin-top: -2em;
+    transition: margin-top 0.2s;
+}
+
+.raised {
+    margin-top: -2em !important;
+}
+        
+</style>
+    <div id='stack1'>
+        <div class='container'>
+            <img src="./assets/CardBacksMez.png" class="card-back"/>
+        </div>
+        <div id='lynx' class='container' onclick="(() => {document.getElementById('lynx').classList.add('raised')})()">
+            <img src="./assets/AceOfDiamonds.png" class="card"/>
+        </div>
+        <div class='container'>
+            <img src="./assets/CardBacksMez.png" class="card-back"/>
+        </div><div class='container'>
+            <img src="./assets/CardBacksMez.png" class="card-back"/>
+        </div><div class='container'>
+            <img src="./assets/CardBacksMez.png" class="card-back"/>
+        </div>
+    </div>
+</html>
