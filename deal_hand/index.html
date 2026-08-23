@@ -12,7 +12,6 @@ scale: 1.5;
 
 .card-back {
     transform: scale(0.96, 1);
-    width: 250px;
     margin-top: 0px;
     margin-left: -2px;
 
@@ -189,7 +188,6 @@ image {
                 await dealHand()
                 await wait(300)
             }
-        
         })();
 
         
@@ -197,7 +195,6 @@ image {
             if(document.getElementsByClassName('card-back').length == 6) return
 
             // deal cards in stack
-            
             
             const ids = document.getElementsByClassName('card-back').length
 
@@ -226,6 +223,10 @@ image {
                 newElement.setAttribute('y','-150');
             });
             
+            newElement.addEventListener("click", function() {
+                newElement.setAttribute('y','-150');
+            });
+            
             newElement.addEventListener("mouseleave", function() {
                 newElement.setAttribute('y','-20');
             });
@@ -242,20 +243,18 @@ image {
 
             await wait(500)
             
-            newElement.setAttribute('width','180');
+            newElement.setAttribute('width','120');
             newElement.setAttribute('height','180');
             newElement.setAttribute('x','-125');
             newElement.setAttribute('y','-20');
             newElement.setAttribute('filter','url(#boxShadow)');
             
-            
-
             document.getElementById('back'+'-'+ids).classList.add('box-after')
             document.getElementById('back'+'-'+ids).setAttribute('href', '../assets/ace_of_diamonds.png')
 
             await wait(500)
             groupo.prepend(use)
-                        const ids_new = document.getElementsByClassName('card-back').length
+            const ids_new = document.getElementsByClassName('card-back').length
 
             // spread
             if(ids_new == 6 ) spread()
