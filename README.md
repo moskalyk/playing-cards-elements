@@ -8,8 +8,7 @@ various bite-sized playing cards actions and frontend elements for us, avec html
 - [x] discard / put somewhere
 - [x] draw a card from deck
 - [x] show cards
-- [ ] new cards shuffle and deck notify 
-- [ ] reading spread deal (with stopages) 
+- [x] new cards shuffle and deck notify 
 
 ## todo
 - teakjs
