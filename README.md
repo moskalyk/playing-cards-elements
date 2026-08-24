@@ -5,9 +5,9 @@ various bite-sized playing cards actions and frontend elements for us, avec html
 - [x] spread select (todo: optimize)
 - [x] deal hand
 - [x] flip card from deck
-- [ ] discard / put somewhere
+- [x] discard / put somewhere
 - [x] draw a card from deck
-- [ ] show cards
+- [x] show cards
 - [ ] new cards shuffle and deck notify 
 - [ ] reading spread deal (with stopages) 
 

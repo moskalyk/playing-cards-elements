@@ -113,13 +113,20 @@ scale: 1.5;
 
 svg .new-card {
   transform: translate(10em,30px);
+    border-radius: 15px;
+    overflow: hidden;
 
 }
 
 .another {
   transform: translate(30em,37em) !important;
   transition: 1s ease-in-out;
-  border-radius: 5px;
+
+}
+
+.discard {
+  transform: translate(30em,-7em) !important;
+  transition: transform 1s !important;
 }
 
 .spread {
@@ -148,13 +155,17 @@ image {
 </style>
     <body>
     
-        <svg id='stack2' width="2000" height="2000" viewBox="0 0 2000 1500">
+        <svg id='stack2' width="3000" height="2000" viewBox="0 0 3000 2000">
         <defs>
 			<!-- FOUND HTML BUG: non applied clipping post href attribute set. clip shape for the image (example: centered circle) -->
 				<!--<clipPath id="clipShape" clipPathUnits="userSpaceOnUse">-->
     <!--               <rect id="clipCircle" x="-122" y="-20" width="203" height="300" fill="white" />-->
 				<!--</clipPath>-->
 				
+				<rect id="rect" x="25%" y="25%" width="50%" height="50%" rx="15"/>
+    <clipPath id="clip">
+      <use xlink:href="#rect"/>
+    </clipPath>
 			<!-- box-shadow-like filter to place behind clipped shape -->
 			<filter id="boxShadow" x="-50%" y="-50%" width="200%" height="200%">
 				<!-- darken source -->
@@ -166,9 +177,32 @@ image {
 					<feMergeNode in="SourceGraphic" />
 				</feMerge>
 			</filter>
+			<filter id="deckShadow" x="-50%" y="-80%" width="200%" height="200%">
+				<!-- darken source -->
+				<feGaussianBlur in="SourceAlpha" stdDeviation="12" result="blur" />
+				<feOffset in="blur" dx="10" dy="12" result="offset" />
+				<feColorMatrix in="offset" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.9 0" result="shadow"/>
+				<feMerge>
+					<feMergeNode in="shadow" />
+					<feMergeNode in="SourceGraphic" />
+				</feMerge>
+			</filter>
+			<filter id="displayShadow" x="-50%" y="-80%" width="200%" height="200%">
+				<!-- darken source -->
+				<feGaussianBlur in="SourceAlpha" stdDeviation="19" result="blur" />
+				<feOffset in="blur" dx="2" dy="2" result="offset" />
+				<feColorMatrix in="offset" type="matrix" values=" 1.000  1.060  1.000  0.431  0.000 
+               1.300  1.130  0.000  0.816  0.000 
+               0.000  1.740  1.730  0.000  0.000 
+               0.000  1.680  0.000  0.731  0.000" result="shadow"/>
+				<feMerge>
+					<feMergeNode in="shadow" />
+					<feMergeNode in="SourceGraphic" />
+				</feMerge>
+			</filter>
 		</defs>
         <g>
-            <image x="42" cy="200" href="../assets/CardBacksMez.png" id='card-back-stationary' class="card-back" height="250" onclick="dealHand()"/>
+            <image x="42" cy="200" href="../assets/CardBacksMez.png" id='card-back-stationary' filter='url(#deckShadow)' class="card-back" height="250" onclick="dealHand()"/>
         </g>
         
 
@@ -207,6 +241,7 @@ image {
             newElement.setAttribute('y','-20');
             newElement.setAttribute('id','back' + '-' + ids);
             newElement.setAttribute('class','card-back');
+
             
             let use = document.createElementNS('http://www.w3.org/2000/svg','use')
             use.setAttribute('href','#clipCircle')
@@ -218,10 +253,11 @@ image {
             groupo.setAttribute('id','hand'+'-'+ids)
             
             groupo.setAttribute('class', 'new-card')
-
-            newElement.addEventListener("mouseenter", function() {
+            const mousenter = function() {
                 newElement.setAttribute('y','-150');
-            });
+            }
+            
+            newElement.addEventListener("mouseenter", mousenter);
             
             newElement.addEventListener("click", function() {
                 newElement.setAttribute('y','-150');
@@ -230,6 +266,14 @@ image {
             newElement.addEventListener("mouseleave", function() {
                 newElement.setAttribute('y','-20');
             });
+            
+            newElement.addEventListener('click', async () => {
+                        await wait(0)
+                newElement.removeEventListener('mouseenter', mousenter)
+                newElement.classList.add('discard')
+                                newElement.setAttribute('y','-20');
+
+            })
             
             document.getElementById('my-hand').appendChild(groupo)
 
@@ -247,17 +291,40 @@ image {
             newElement.setAttribute('height','180');
             newElement.setAttribute('x','-125');
             newElement.setAttribute('y','-20');
+            
+            
+
             newElement.setAttribute('filter','url(#boxShadow)');
             
             document.getElementById('back'+'-'+ids).classList.add('box-after')
             document.getElementById('back'+'-'+ids).setAttribute('href', '../assets/ace_of_diamonds.png')
-
+            document.getElementById('back'+'-'+ids).setAttribute('ry','15');
             await wait(500)
             groupo.prepend(use)
             const ids_new = document.getElementsByClassName('card-back').length
 
             // spread
-            if(ids_new == 6 ) spread()
+            if(ids_new == 6 ) {
+                spread()
+                await wait(1000)
+            
+                show()
+            }
+        }
+        
+        function show() {
+            console.log(['showing'])
+            console.log('spreading')
+            const els = document.getElementsByClassName('card-back')
+            console.log(els)
+            Array.from(els).slice(0,5).forEach((_, id) => {
+                console.log('hand'+'-'+Number(1+id))
+                document.getElementById('use-' + Number(1+id)).style.transform = 'translate('+Number(id*150)+'px,0)'
+                document.getElementById('back'+'-'+Number(1+id)).style.transform = 'translate('+Number(id*150)+'px,0)'
+            })
+            document.getElementById('my-hand').style.transform = 'translate(5em, -10em)'
+            document.getElementById('my-hand').setAttribute('filter','url(#displayShadow)')
+
         }
         
         function spread() {
